@@ -30,6 +30,22 @@ jobs:
       - name: Build DocC
         run: |
           yarn install && yarn && yarn run doc
+      - name: Zip It Up 🤐
+        run: |
+          mv /tmp/docbuild/Build/Products/${{ env.BUILD_PRODUCT }}/${{ env.PACKAGE_NAME }}.doccarchive ${{ env.PACKAGE_NAME }}-${{ matrix.language }}.doccarchive
+          zip -r ${{ env.PACKAGE_NAME }}-${{ matrix.language }}.doccarchive.zip ${{ env.PACKAGE_NAME }}-${{ matrix.language }}.doccarchive
+      - name: Upload DocC Artifact ⬆️
+        uses: actions/upload-artifact@v3
+        with:
+          name: react-native-agora-docs.zip
+          path: react-native-agora-docs.zip
+      - name: Upload DocC Archive to GitHub release ⬆️
+        if: github.event.release
+        uses: svenstaro/upload-release-action@2.6.0
+        with:
+          file: react-native-agora-docs.zip
+          asset_name: react-native-agora-docs.zip
+          tag: ${{ github.ref_name }}
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:
