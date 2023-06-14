@@ -1,5 +1,5 @@
 # Simple workflow for deploying static content to GitHub Pages
-name: Deploy TD
+name: TypeDoc
 
 on:
   # Runs on pushes targeting the default branch
@@ -27,13 +27,12 @@ jobs:
     steps:
       - name: Checkout 🛎️
         uses: actions/checkout@v3
-      - name: Build DocC
+      - name: Build TypeDoc
         run: |
           yarn install && yarn && yarn run doc
       - name: Zip It Up 🤐
         run: |
-          mv /tmp/docbuild/Build/Products/${{ env.BUILD_PRODUCT }}/${{ env.PACKAGE_NAME }}.doccarchive ${{ env.PACKAGE_NAME }}-${{ matrix.language }}.doccarchive
-          zip -r ${{ env.PACKAGE_NAME }}-${{ matrix.language }}.doccarchive.zip ${{ env.PACKAGE_NAME }}-${{ matrix.language }}.doccarchive
+          zip -r react-native-agora-docs.zip docs
       - name: Upload DocC Artifact ⬆️
         uses: actions/upload-artifact@v3
         with:
